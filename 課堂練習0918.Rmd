@@ -106,17 +106,62 @@ collegeData <- read_csv("https://raw.githubusercontent.com/tpemartin/github-data
 ```
 
 ### Pop quiz
-檢查變數結構
-顯示前4筆，後3筆，中間第101到110筆。
+1. 檢查變數結構
+2. 顯示前4筆，後3筆，中間第101到110筆。
 ```{r}
 str(collegeData)               #check data style
-       
-slice(collegeData,1:4)         #檢查前4筆
-slice(collegeData,n()-2:n())   #檢查後3筆
-slice(collegeData,101:110)     #101-110
+slice(collegeData,c(1:4), n()-2:n(), (101:110))
+slice(collegeData, c(1:4))
+slice(collegeData, n()-2:n())
+slice(collegeData, c(101:110))
+```
+
+```{r}
+StuDF
+mutate(StuDF,
+       調分後成績=成績+10)  #最右邊多一個新變數，但並沒有回存，所以dataframe不變
+transmute(StuDF,
+       調分後成績=成績+10)  #不保留其他變數（只有新創的）
+```
+```{r}
+# method1
+StuDF
+mutate(StuDF,
+       調分後成績=成績+10) -> StuDF
+# method2
+# StuDF
+# StuDF <- mutate(StuDF,
+#       調分後成績=成績+10) 
+```
+```{r}
+# 不使用dplyr則必需使用$取出變數向量（成績）後，進行運算再回存到data frame裡新的變數（調分後成績）裡：
+StuDF$調分後成績 <-
+  StuDF$成績+10
+# 從list角度看
+StuDF
 ```
 
 
+### Pop Quiz
+在collegeData:
+1. 新增變數男生及女生,其值為「一到四年級」所有男生及女生的加總。（男生使用dplyr, 女生不使用dplyr）
+2. 新增變數男女生比，其值為前述男生/女生。
+```{r}
+# 1
+collegeData
+mutate(collegeData,
+       男生=一年級男生+二年級男生+三年級男生+四年級男生)->collegeData
+
+collegeData$女生 <-
+  collegeData$一年級女生+collegeData$二年級女生+collegeData$三年級女生+collegeData$四年級女生
+# 2
+collegeData$男女生比<-collegeData$男生/collegeData$女生
+```
 
 
+```{r}
+collegeData
+mutate(collegeData,
+       男生=一年級男生+二年級男生+三年級男生+四年級男生)-> collegeData
+```
 
