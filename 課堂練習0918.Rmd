@@ -466,7 +466,7 @@ load(url("https://www.dropbox.com/s/duh5aaqgl2f5m3z/loopTranscriptData.Rda?raw=1
 ### Pop Quiz
 1. 計算每位學生每學期的平均成績。
 2. 計算每位學生每學年每學期學分數在必/選/通 三類的學分數比重。
-3. 學屆為100（即100學年入學）的學生，各系學生在學所修總學分數之中位數，何系最高？
+3. 學屆為100（即100學年入學）的學生，各系學生在學所修總學分數之中位數，何系最高？    Ans:History or Chinese
 ```{r}
 #1
 transcriptDataFinal %>%
