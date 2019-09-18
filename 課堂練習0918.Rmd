@@ -82,8 +82,39 @@ slice(StuDF,(n()-1):n())   # method1(good)
 slice(StuDF, 7:8)          # method2(you have to count and know how much data in this dataframe)
 ```
 
+```{r}
+StuDF
+slice(StuDF,-5:-7)    #第五到七個資料不要
+slice(StuDF,-(5:7))   #a better expression, would not mislead to python expression
+```
 
+```{r}
+5:7
+-(5:7)
+c(-5, -6, -7)
+```
 
+### 只要1,4,7
+```{r}
+slice(StuDF,c(1,4,8))
+slice(StuDF,-c(2:3),-c(5:7))
+```
+
+```{r}
+library(readr)
+collegeData <- read_csv("https://raw.githubusercontent.com/tpemartin/github-data/master/103_student.csv")
+```
+
+### Pop quiz
+檢查變數結構
+顯示前4筆，後3筆，中間第101到110筆。
+```{r}
+str(collegeData)               #check data style
+       
+slice(collegeData,1:4)         #檢查前4筆
+slice(collegeData,n()-2:n())   #檢查後3筆
+slice(collegeData,101:110)     #101-110
+```
 
 
 
