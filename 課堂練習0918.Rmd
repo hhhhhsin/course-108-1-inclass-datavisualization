@@ -53,4 +53,39 @@ typeof(StuList)
 
 # StuList & StuDF,type中都是list, 但實際上，StuDF因為class是dataframe所以其實可以做更多的事
 ```
+```{r}
+length(StuDF) # 從向量角度看  # 其實就是有幾個"，"然後再+1
+nrow(StuDF) # 從矩陣角度看
+#length(StuDF) 裡面只有五個element，但每一個element都是一個list or vector
+```
+
+```{r}
+str(StuDF)    #檢查變數結構
+head(StuDF)   #檢查前6筆
+tail(StuDF)   #檢查後6筆
+```
+
+###Slice
+
+```{r}
+StuDF
+slice(StuDF,1:3)
+slice(StuDF,4:5)
+slice(StuDF,n())  #最後一筆
+
+# 下面跑出４個datafram，分別對應StuDF, slice(StuDF,1:3), slice(StuDF,4:5), slice(StuDF,n())
+```
+
+#### 使用slice顯示最後2筆資料。
+```{r}
+slice(StuDF,(n()-1):n())   # method1(good)
+slice(StuDF, 7:8)          # method2(you have to count and know how much data in this dataframe)
+```
+
+
+
+
+
+
+
 
