@@ -295,7 +295,7 @@ filter(StuDF,
 ### Pop Quiz
 依以下各別情境，選出collegeData中符合情境的觀測值：
 1. 縣市名稱為“30 臺北市”
-2. 縣市名稱為“30 臺北市”或“01 新北市”。（使用OR|或belong to%in%）
+2. 縣市名稱為“30 臺北市”或“01 新北市”。（使用OR|或belong to %in%）
 ```{r}
 #1
 collegeData
@@ -303,9 +303,92 @@ filter(collegeData,
        縣市名稱=="30 臺北市")
 #2
 filter(collegeData,
-       縣市名稱=="30 臺北市" | 縣市名稱=="01 新北市")
+       縣市名稱=="30 臺北市" | 縣市名稱=="01 新北市")     # or
+#2 method 2
+filter(collegeData,
+       縣市名稱 %in% c("30 臺北市", "01 新北市"))         # belong to
 ```
 
+### group_by：分群計算
+```{r}
+group_by(StuDF,
+         性別) -> StuDF_by性別    # 只是一個新的dataframe,以性別來分組（男、女）
+
+# 使用grouped data frame
+summarise(StuDF_by性別,
+        平均成績=mean(成績),
+        最高分=max(成績),
+        最低分=min(成績))
+
+# 使用ungrouped data frame
+summarise(StuDF,
+        平均成績=mean(成績),
+        最高分=max(成績),
+        最低分=min(成績))
+```
+
+```{r}
+# 男女調分不同,各加其群組之「最高減最低分除以5」
+mutate(
+  StuDF_by性別,
+  最高分=max(成績),
+  最低分=min(成績),
+  調分大小=(最高分-最低分)/5,
+  調分後成績=成績+調分大小
+) -> StuDF_依性別調分
+StuDF_依性別調分
+```
+
+```{r}
+#依性別成績分:依性別及成績是否大於75分
+group_by(StuDF,
+         性別,
+         (成績>75)) -> StuDF_by性別成績    # 依性別、成績>75來分，共四組
+
+summarise(StuDF_by性別成績,
+          平均成績=mean(成績),
+          人數=n())
+```
+
+
+```{r}
+ungroup(StuDF_依性別調分) -> 
+  StuDF_調分後
+```
+
+### Pop Quiz
+計算collegeData中不同縣市名稱及體系別及等級別的一年級男生及一年級女生總數（使用sum）和學校數目。
+```{r}
+collegeData
+group_by(collegeData,
+         縣市名稱,
+         體系別)-> collegeData_grouped
+
+summarise(collegeData_grouped,
+          一年級男生總數=sum(一年級男生),
+          一年級女生總數=sum(一年級女生),
+          學校數目=n())
+# wrong!
+# in 體系別，如果是政大，有三個體系別，則會算三次（明明都是政大）
+```
+
+```{r}
+collegeData
+group_by(collegeData,
+         縣市名稱,
+         體系別,
+         體系別)-> collegeData_grouped
+summarise(collegeData_grouped,
+          一年級男生總數=sum(一年級男生),
+          一年級女生總數=sum(一年級女生),
+          學校數目=length(unique(學校名稱)))
+```
+
+### Pipe operator (under dplyr)
+%>% pipe operator:
+1. 預設：%>% 把它左邊（LHS）的物件流入它右邊（RHS）函數的argument第一個位置。 )
+2. 若要流入右邊函數的「非」第一位置argument，則用.在右邊函數中標示。
+3. %>% 可進行串接，則下一個%>%會以上個函數輸出結果當做新的LHS物件。
 ```{r}
 
 ```
@@ -313,9 +396,6 @@ filter(collegeData,
 ```{r}
 
 ```
-
-
-
 
 
 
