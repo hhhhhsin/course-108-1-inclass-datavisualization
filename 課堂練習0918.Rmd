@@ -158,10 +158,70 @@ collegeData$女生 <-
 collegeData$男女生比<-collegeData$男生/collegeData$女生
 ```
 
+```{r}
+# mutate remix
+mutate(collegeData,
+       男生=一年級男生+二年級男生+三年級男生+四年級男生,
+       女生=一年級女生+二年級女生+三年級女生+四年級女生,
+       男女生比=男生/女生
+       )-> collegeData
+```
+
+### summarise：計算特徵值
+```{r}
+StuDF
+summarise(StuDF,
+        平均成績=mean(成績),
+        最高分=max(成績),
+        最低分=min(成績))
+# outcome is still dataframe
+```
+#Pop Quiz
+1. 以上計算若把summarise改成mutate結果會如何？
+2. 若老師的調分為原始成績加上「最高最低分差距除以5」，請產生調分成績:
+```{r}
+#1
+StuDF
+mutate(StuDF,
+        平均成績=mean(成績),
+        最高分=max(成績),
+        最低分=min(成績))
+# 重複寫八次
+```
 
 ```{r}
-collegeData
-mutate(collegeData,
-       男生=一年級男生+二年級男生+三年級男生+四年級男生)-> collegeData
+#2
+mutate(StuDF,
+        調分成績=(成績+(max(成績)-min(成績))/5))
+
+#2 method2
+StuDF
+mutate(StuDF,
+        平均成績=mean(成績),
+        最高分=max(成績),
+        最低分=min(成績),
+        調分成績 = 成績+(最高分-最低分)/5)
 ```
+
+```{r}
+StuDF
+mutate(StuDF,
+        平均成績=mean(成績),
+        最高分=max(成績),
+        最低分=min(成績)) -> StuDF2
+```
+### select：選擇變數
+```{r}
+StuDF2
+names(StuDF2)                                     #顯示物件內元素名稱
+select(StuDF2,
+       姓名,學號,成績,調分後成績)                 #只選擇4個變數
+select(StuDF2,
+       -次序,-性別,-最高分,-最低分,-平均成績)     #不選5個變數
+```
+
+
+
+
+
 
