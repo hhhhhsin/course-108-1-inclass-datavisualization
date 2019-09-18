@@ -220,6 +220,101 @@ select(StuDF2,
        -次序,-性別,-最高分,-最低分,-平均成績)     #不選5個變數
 ```
 
+```{r}
+select(StuDF2,
+       次序,性別,
+       contains("最"))     #有"最"這個字的變數也要一起選
+
+select(StuDF2,
+       -次序,-性別,
+       -contains("最"))
+```
+### Pop Quiz
+1. 選出collegeData中所有男生變數
+2. 選出collegeData中所有男生、女生變數
+```{r}
+#1
+select(collegeData,
+       contains("男生"))
+#2
+select(collegeData,
+       contains("生"))
+```
+
+### filter：條件選取觀測值
+```{r}
+StuDF   # 看女在哪
+# logical vector
+logiChoose <- c(
+  F,F,F,T,T,F,T,F
+)
+#4,5,7 :true
+# 使用logical vector選擇所要觀測值"女"
+StuDF[logiChoose,]
+```
+```{r}
+logiChoose
+which(logiChoose)            # 只執行這行會是4,5,7
+slice(
+  StuDF,which(logiChoose)
+)
+```
+
+```{r}
+StuDF$性別=="女" # logical predicate    # 產生FTTFFFFF等東西出來
+
+logiChoose <- StuDF$性別=="女"
+StuDF[logiChoose,]
+```
+
+```{r}
+# 女性，且成績大於60
+
+# relational operators
+StuDF$性別=="女"                                         # 條件1
+StuDF$成績>60                                            # 條件2
+
+# combined with logical operator
+(StuDF$性別=="女" & StuDF$成績>60) -> logiChoose2        # 條件1,2 都成立
+logiChoose2
+
+StuDF[logiChoose2,]     #結果顯示只有一個女生             
+```
+
+
+```{r}
+StuDF
+filter(StuDF,
+       性別=="女")
+filter(StuDF,
+       (性別=="女" & 成績>60))   #A
+filter(StuDF,
+       性別=="女",
+       成績>60) # 多個AND條件可用,分隔    #(同A)
+```
+### Pop Quiz
+依以下各別情境，選出collegeData中符合情境的觀測值：
+1. 縣市名稱為“30 臺北市”
+2. 縣市名稱為“30 臺北市”或“01 新北市”。（使用OR|或belong to%in%）
+```{r}
+#1
+collegeData
+filter(collegeData,
+       縣市名稱=="30 臺北市")
+#2
+filter(collegeData,
+       縣市名稱=="30 臺北市" | 縣市名稱=="01 新北市")
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+
 
 
 
